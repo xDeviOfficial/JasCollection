@@ -11,6 +11,7 @@ import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import pl.jasmc.jashub.CollectionAPI;
 import pl.jasmc.jashub.JasCollection;
 import pl.jasmc.jashub.gui.ScrollerInventory;
 import pl.jasmc.jashub.objects.CollectionItem;
@@ -68,9 +69,20 @@ public class ReloadCommand implements CommandExecutor {
                         JasCollection.getYamler().reload();
                         JasCollection.getInstance().loadConfig();
                         player.sendMessage(color("&a&lJasMC » &ePomyslnie przeladowano Config"));
+                    } else if(args.length == 1 && args[0].equalsIgnoreCase("monety")) {
+                        player.sendMessage(color("&a&lJasMC » &eZlocisty proch: " + MetaStorage.getPlayerMeta(player.getName()).getCoins()));
+                    } else if(args.length == 1 && args[0].equalsIgnoreCase("losuj")) {
+                        CollectionAPI.getRandomCollectionItem(MetaStorage.getPlayerMeta(player.getName()));
                     }
                 } else {
-                    openCollection(player);
+                    if(args.length == 0) {
+                        openCollection(player);
+                    } else if(args.length == 1 && args[0].equalsIgnoreCase("monety")) {
+                        player.sendMessage(color("&a&lJasMC » &eZlocisty proch: " + MetaStorage.getPlayerMeta(player.getName()).getCoins()));
+                    } else if(args.length == 1 && args[0].equalsIgnoreCase("losuj")) {
+                        CollectionAPI.getRandomCollectionItem(MetaStorage.getPlayerMeta(player.getName()));
+                    }
+
                 }
             }
         }

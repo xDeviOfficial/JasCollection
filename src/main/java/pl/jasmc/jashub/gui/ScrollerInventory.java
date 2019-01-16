@@ -10,9 +10,12 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionType;
+import pl.jasmc.jashub.objects.MetaStorage;
+import pl.jasmc.jashub.objects.PlayerMeta;
 import pl.jasmc.jashub.util.ItemBuilder;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -26,14 +29,14 @@ public class ScrollerInventory{
     public ScrollerInventory(ArrayList<ItemStack> items, String name, Player p){
         this.id = UUID.randomUUID();
 //create new blank page
-        Inventory page = getBlankPage(name);
+        Inventory page = getBlankPage(name, MetaStorage.getPlayerMeta(p.getName()));
         //According to the items in the arraylist, add items to the ScrollerInventory
         for(int i = 0;i < items.size(); i++){
             //If the current page is full, add the page to the inventory's pages arraylist, and create a new page to add the items.
             System.out.println("First empty: " + page.firstEmpty());
             if(page.firstEmpty() == 46 || page.firstEmpty() == -1 ){
                 pages.add(page);
-                page = getBlankPage(name);
+                page = getBlankPage(name, MetaStorage.getPlayerMeta(p.getName()));
                 page.addItem(items.get(i));
             }else{
 //Add the item to the current page as per normal
@@ -47,14 +50,14 @@ public class ScrollerInventory{
     }
 
 
-
+    public static final String coinsName = ChatColor.GOLD + " ";
     public static final String emptyString = " ";
-    public static final String disableEffectsName = ChatColor.RED + "Wulacz efekty";
+    public static final String disableEffectsName = ChatColor.RED + "Zdejmij przedmioty";
     public static final String nextPageName = ChatColor.AQUA + "Nastepna strona";
     public static final String previousPageName = ChatColor.AQUA + "Poprzednia strona";
     public static final String closeItem = ChatColor.RED + "Zamknij";
     //This creates a blank page with the next and prev buttons
-    private Inventory getBlankPage(String name){
+    private Inventory getBlankPage(String name, PlayerMeta owner){
         Inventory page = Bukkit.createInventory(null, 54, name);
 
 
@@ -83,6 +86,12 @@ public class ScrollerInventory{
         meta.setDisplayName(disableEffectsName);
         disableEffects.setItemMeta(meta);
 
+        ItemStack goldenPowder = new ItemStack(Material.BLAZE_POWDER, 1);
+        meta = goldenPowder.getItemMeta();
+        meta.setDisplayName(coinsName);
+        meta.setLore(Arrays.asList("    ", ChatColor.GOLD + "    " + ChatColor.BOLD + " Zlocisty proch: " + owner.getCoins() + "   ", "   ", "  "));
+        goldenPowder.setItemMeta(meta);
+
 
 
 
@@ -98,7 +107,7 @@ public class ScrollerInventory{
         page.setItem(9, glass);
         page.setItem(18, glass);
         page.setItem(27, glass);
-        page.setItem(36, glass);
+        page.setItem(36, goldenPowder);
         //2rzad od lewej
         page.setItem(10, emptySlot);
         page.setItem(19 ,emptySlot);

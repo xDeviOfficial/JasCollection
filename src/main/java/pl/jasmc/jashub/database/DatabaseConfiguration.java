@@ -140,9 +140,14 @@ public class DatabaseConfiguration {
     }
 
     public static void unlockItem(int id, PlayerMeta meta) {
+        if(alreadyUnlocked(id, meta.getIdInBase())) {
+            System.out.println("User: " + meta.getName() + " already unclodked: " + id + " Abortring unclock!");
+            return;
+        }
         String sql = "INSERT INTO `JasCollectionUnlocks` VALUES ('" + id + "', '" + meta.getIdInBase() + "')";
         try {
             stm.executeUpdate(sql);
+            System.out.println("Unlock complete for user " + meta.getName() + " and unlock_id:" + id);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -187,11 +192,11 @@ public class DatabaseConfiguration {
      */
 
 
-    public static boolean alreadyUnlocked(CollectionItem item, String player) {
-        String query = "SELECT * FROM JasCollectionUsers WHERE username=\"" + player + "\"";
+    public static boolean alreadyUnlocked(int idToCheck, int userID) {
+        String query = "SELECT * FROM JasCollectionUnlocks WHERE user_id=\"" + userID + "\"";
         try (ResultSet rs = stm.executeQuery(query)) {
             while(rs.next()) {
-                if(item.getId() == rs.getInt("item_id")) {
+                if(idToCheck == rs.getInt("unlock_id")) {
                     return true;
                 }
             }

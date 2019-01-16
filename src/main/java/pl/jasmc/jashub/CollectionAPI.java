@@ -1,5 +1,6 @@
 package pl.jasmc.jashub;
 
+import org.bukkit.ChatColor;
 import pl.jasmc.jashub.database.DatabaseConfiguration;
 import pl.jasmc.jashub.objects.CollectionItem;
 import pl.jasmc.jashub.objects.CollectionStorage;
@@ -10,6 +11,8 @@ import java.util.Map;
 import java.util.Random;
 
 public class CollectionAPI {
+
+
 
     /**
     *Pobieranie obiektu Gracza PlayerMeta
@@ -33,14 +36,17 @@ public class CollectionAPI {
     public static void getRandomCollectionItem(PlayerMeta meta) {
         Random random = new Random();
 
-        CollectionItem[] entries = (CollectionItem[]) CollectionStorage.getCollectionItems().values().toArray();
-        CollectionItem randomItem = entries[random.nextInt(entries.length)];
+        int randomNumber = random.nextInt(meta.getAllItems().size());
+        CollectionItem randomItem = meta.getAllItems().get(randomNumber);
 
         if(meta.isUnlocked(randomItem.getId())) {
+
             meta.addCoins(randomItem.getPrice()/2);
+            meta.getPlayer().sendMessage(ChatColor.GREEN + "Wylosowales " + randomItem.getPrice() / 2);
         } else {
             DatabaseConfiguration.unlockItem(randomItem.getId(), meta);
             meta.getItemByID(randomItem.getId()).setUnlocked(true);
+            meta.getPlayer().sendMessage(ChatColor.GREEN + "Wylosowales " + randomItem.getName());
         }
     }
 
