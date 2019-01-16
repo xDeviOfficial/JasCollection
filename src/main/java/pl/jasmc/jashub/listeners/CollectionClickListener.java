@@ -36,9 +36,9 @@ public class CollectionClickListener implements Listener {
                 DatabaseConfiguration.removeCoins(event.getMeta(), event.getItem().getPrice());
                 DatabaseConfiguration.unlockItem(event.getItem().getId(), event.getMeta());
                 event.getItem().setUnlocked(true);
-                event.getMeta().getPlayer().updateInventory();
-                event.getMeta().getPlayer().closeInventory();
-                ReloadCommand.openCollection(event.getMeta().getPlayer());
+                //event.getMeta().getPlayer().updateInventory();
+                //event.getMeta().getPlayer().closeInventory();
+                //ReloadCommand.openCollection(event.getMeta().getPlayer());
                 event.getMeta().getPlayer().sendMessage(color("&a&lJasMC » &bPomyslnie odblokowano &a" + event.getItem().getName()));
                 //DatabaseConfiguration.unlockItem();
             } else {

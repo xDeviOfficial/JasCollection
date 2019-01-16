@@ -66,7 +66,7 @@ public final class JasCollection extends JavaPlugin {
         }
     }
 
-    private void loadConfig() {
+    public void loadConfig() {
         File f = new File(getDataFolder(), "config.yml");
         if(!f.exists()) {
             config = new Yamler(f);
@@ -101,7 +101,7 @@ public final class JasCollection extends JavaPlugin {
         CollectionStorage.loadCollection();
     }
     private void registerCommands() {
-        getCommand("collection").setExecutor(new ReloadCommand());
+        getCommand("kolekcja").setExecutor(new ReloadCommand());
     }
 
     private void registerListeners() {
@@ -112,7 +112,7 @@ public final class JasCollection extends JavaPlugin {
         pm.registerEvents(new CollectionClickListener(), this);
     }
 
-    private void loadDatabase() {
+    public void loadDatabase() {
         if(config != null) {
             if(config.getCfg().getBoolean("General.Database.DatabaseUse")) {
                 hikari = new HikariDataSource();

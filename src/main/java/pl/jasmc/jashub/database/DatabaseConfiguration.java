@@ -23,7 +23,7 @@ public class DatabaseConfiguration {
         Connection connection = ab.getHikari().getConnection();
         stm = connection.createStatement();
         stm.executeUpdate("CREATE TABLE IF NOT EXISTS `JasCollectionUsers` (user_id int not null AUTO_INCREMENT, username varchar(16), uuid varchar(64), coins int(10), PRIMARY KEY(user_id));");
-        stm.executeUpdate("CREATE TABLE IF NOT EXISTS `JasCollectionUnlocks` (unlock_id int, user_id int not null, PRIMARY KEY(unlock_id), FOREIGN KEY(user_id) REFERENCES JasCollectionUsers(user_id));");
+        stm.executeUpdate("CREATE TABLE IF NOT EXISTS `JasCollectionUnlocks` (unlock_id int, user_id int not null, FOREIGN KEY(user_id) REFERENCES JasCollectionUsers(user_id));");
     }
 
     public static void insertPlayerData(PlayerMeta meta) {
@@ -121,6 +121,24 @@ public class DatabaseConfiguration {
         }
     }
 
+    public static void setCoins(PlayerMeta meta, int coinsToSet) {
+        String sql = "UPDATE `JasCollectionUsers` SET `coins` = " + coinsToSet + " WHERE `user_id` = '" + meta.getIdInBase() + "';";
+        try {
+            stm.executeUpdate(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void addCoins(PlayerMeta meta, int coinsToAdd) {
+        String sql = "UPDATE `JasCollectionUsers` SET `coins` = coins +" + coinsToAdd + " WHERE `user_id` = '" + meta.getIdInBase() + "';";
+        try {
+            stm.executeUpdate(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void unlockItem(int id, PlayerMeta meta) {
         String sql = "INSERT INTO `JasCollectionUnlocks` VALUES ('" + id + "', '" + meta.getIdInBase() + "')";
         try {
@@ -143,79 +161,11 @@ public class DatabaseConfiguration {
 
 
 
-    //GETERY
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    //////////OLD ///////////////////////
-
-    public static void purgePresentsTables(){
-        String truncate_off = "SET FOREIGN_KEY_CHECKS = 0;";
-        String query1 = "TRUNCATE JasPresents";
-        String query2 = "TRUNCATE JasPresentsUsers";
-        String truncate_on = "SET FOREIGN_KEY_CHECKS = 1;";
-        try {
-            stm.executeUpdate(truncate_off);
-            stm.executeUpdate(query1);
-            stm.executeUpdate(query2);
-            stm.executeUpdate(truncate_on);
-
-            if(JasCollection.DEBUG) {
-                System.out.print("Zresetowano prezenty.");
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /*
-        loadPlayer()
-        @p = Gracz
-        Ladowanie gracza
-     */
-
-    public static void loadPlayer(PlayerMeta playerMeta, boolean loaded)  {
-
-    }
 
 
     public static boolean containsItemWithID(List<CollectionItem> items, int id) {
         return items.stream().filter(object -> object.getId() == id).findFirst().isPresent();
     }
-
-
-         /*
-        loadTestPresentToFind()
-        @p = Gracz
-        Ladowanie prezentow do znalezienia
-     */
 
     public static void loadLockedItems(PlayerMeta jPlayer) {
         List<CollectionItem> result = CollectionStorage.getCollectionItems().values().stream().filter(foundItem -> CollectionStorage.getCollectionItems().values().contains(foundItem)).collect(Collectors.toList());
@@ -228,18 +178,12 @@ public class DatabaseConfiguration {
                     System.out.println("Lock: " + item.getId() + " dla Gracza " + jPlayer.getName());
                 }
             }
-
-
-
-
-
-            //jPlayer.getLockedItems().add(item);
         }
     }
 
 
     /*
-        SPRAWDZANIE CZY ZNALAZL PREZENT
+        SPRAWDZANIE CZY ZNALAZL ITEM
      */
 
 
@@ -256,69 +200,4 @@ public class DatabaseConfiguration {
         }
         return false;
     }
-
-    /*
-        ZANALEZIENIE PREZENTU
-     */
-
-
-    public static void foundPresent(String player, PlayerMeta present) {
-      //  String query  = "INSERT INTO JasPresentsUsers (username, world, x, y, z, present_id) VALUES (\"" + player + "\",\"" + present.getLocation().getWorld().getName() + "\"," +  present.getLocation().getX() + ","  + present.getLocation().getY() + "," + present.getLocation().getZ() + "," + present.getId() + ")";
-        /*ThreadPool.runTaskAsync(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    stm.executeUpdate(query);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-        });*/
-    }
-
-    /*
-        Dodawanie prezentu do bazy
-     */
-
-
-    public static void addPresent(String location, String name, String type) throws SQLException  {
-        String query = "INSERT INTO JasPresents (location, present_name, present_type) VALUES (\"" +  location + "\",\"" + name + "\",\"" + type + "\")";
-        //if(Presents.DEBUG_MODE) {
-        //    System.out.println("Query: " + query);
-       // }
-
-       // stm.executeUpdate(query);
-    }
-
-    public static void deletePresent(String name)throws SQLException {
-        String query = "DELETE FROM JasPresents WHERE name=\"" + name + "\"";
-        stm.executeUpdate(query);
-    }
-
-    /*
-
-        DEBUGOWANIE
-
-
-    public static void loadPresents() throws SQLException {
-        ResultSet rs = stm.executeQuery("SELECT * FROM JasPresents");
-        int i = 0;
-        while(rs.next()) {
-            Present present = new Present(rs.getString("present_name"), PresentType.valueOf(rs.getString("present_type").toUpperCase()), Utils.stringToLoc(rs.getString("location")), rs.getInt("id"));
-            DataManager.addPresent(present);
-            i++;
-        }
-        if(Presents.DEBUG_MODE) {
-            System.out.println("Załadowano: " + i + " prezentow");
-        }
-
-        for(Present p : DataManager.loadedPresenents) {
-            if(Presents.DEBUG_MODE) {
-                System.out.println("Kolor: " + p.getType().name());
-            }
-
-        }
-    }
-*/
-
 }

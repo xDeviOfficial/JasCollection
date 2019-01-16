@@ -1,9 +1,11 @@
 package pl.jasmc.jashub.gui.listeners;
 
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.ItemStack;
 import pl.jasmc.jashub.gui.ScrollerInventory;
 
 public class GUIListener implements Listener {
@@ -24,8 +26,10 @@ public class GUIListener implements Listener {
             event.setCancelled(true);
             //If there is no next page, don't do anything
             if(inv.currpage >= inv.pages.size()-1){
+                System.out.println("There is no Next page");
                 return;
             }else{
+                System.out.println("Loading next page");
                 //Next page exists, flip the page
                 inv.currpage += 1;
                 p.openInventory(inv.pages.get(inv.currpage));
@@ -45,6 +49,12 @@ public class GUIListener implements Listener {
         else if(event.getCurrentItem().getItemMeta().getDisplayName().equals(ScrollerInventory.closeItem)) {
             event.setCancelled(true);
             p.closeInventory();
+        } else if(event.getCurrentItem().getItemMeta().getDisplayName().equals(ScrollerInventory.disableEffectsName)) {
+            event.getWhoClicked().getInventory().setHelmet(null);
+            event.getWhoClicked().getInventory().setChestplate(null);
+            event.getWhoClicked().getInventory().setLeggings(null);
+            event.getWhoClicked().getInventory().setBoots(null);
+            event.getWhoClicked().sendMessage(ChatColor.GREEN + "Usunieto ubrane itemki");
         }
     }
 }

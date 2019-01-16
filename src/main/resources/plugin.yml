@@ -3,4 +3,4 @@ version: ${project.version}
 main: pl.jasmc.jashub.JasCollection
 authors: [xDevi]
 commands:
-  collection:
+  kolekcja:

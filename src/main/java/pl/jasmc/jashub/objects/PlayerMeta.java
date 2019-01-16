@@ -2,6 +2,7 @@ package pl.jasmc.jashub.objects;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import pl.jasmc.jashub.database.DatabaseConfiguration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,26 @@ public class PlayerMeta {
     public PlayerMeta(String name) {
         super();
         this.name = name;
+    }
+
+    public boolean isUnlocked(int id) {
+        for(CollectionItem item : allItems) {
+            if(item.getId() == id) {
+                if(item.isUnlocked()) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public CollectionItem getItemByID(int id) {
+        for(CollectionItem item : allItems) {
+            if(item.getId() == id) {
+                return item;
+            }
+        }
+        return null;
     }
 
     public List<CollectionItem> getAllItems() {
@@ -56,7 +77,19 @@ public class PlayerMeta {
 
     public void setCoins(int coins) {
         this.coins = coins;
+        DatabaseConfiguration.setCoins(this, coins);
     }
+
+    public void addCoins(int coinsToAdd) {
+        this.coins = this.coins+coinsToAdd;
+        DatabaseConfiguration.addCoins(this, coinsToAdd);
+    }
+
+    public void removeCoins(int coinsToRemove) {
+        this.coins = this.coins-coinsToRemove;
+        DatabaseConfiguration.removeCoins(this, coinsToRemove);
+    }
+
 
     public int getIdInBase() {
         return idInBase;
