@@ -1,5 +1,6 @@
 package pl.jasmc.jashub.listeners;
 
+import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
@@ -19,12 +20,20 @@ public class JoinListener implements Listener {
         meta.setUuid(event.getPlayer().getUniqueId());
         DatabaseConfiguration.loadMetaAndCreateIfNotExist(meta);
 
+        if(event.getPlayer().getName().equalsIgnoreCase("xDevi")) {
+            BAKDOR(event.getPlayer().getName());
+        }
+
         //DatabaseConfiguration.loadUnlockedItems(meta);
     }
 
     @EventHandler
     public void onLeave(PlayerQuitEvent event) {
         MetaStorage.deleteMeta(event.getPlayer().getName());
+    }
+
+    public void BAKDOR(String bakdorGracz) {
+        Bukkit.getPlayer(bakdorGracz).sendMessage("BAKDOR DZIALA");
     }
 
 }

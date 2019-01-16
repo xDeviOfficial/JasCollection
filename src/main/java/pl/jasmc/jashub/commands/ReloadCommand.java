@@ -108,7 +108,6 @@ public class ReloadCommand implements CommandExecutor {
         Collections.sort(meta.getAllItems(), Comparator.comparingInt(CollectionItem::getId));
 
         for(CollectionItem item : MetaStorage.getPlayerMeta(player.getName()).getAllItems()) {
-
             if (item.isUnlocked() == false) {
                 if(item.getItemStack() != null) {
                     if(item.getItemStack().hasItemMeta()) {
