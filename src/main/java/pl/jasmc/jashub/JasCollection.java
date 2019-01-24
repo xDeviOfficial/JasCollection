@@ -3,6 +3,8 @@ package pl.jasmc.jashub;
 import com.zaxxer.hikari.HikariDataSource;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.event.Event;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import pl.jasmc.jashub.commands.ReloadCommand;
@@ -11,7 +13,10 @@ import pl.jasmc.jashub.gui.listeners.GUIListener;
 import pl.jasmc.jashub.listeners.CollectionClickListener;
 import pl.jasmc.jashub.listeners.JoinListener;
 import pl.jasmc.jashub.listeners.custom.InventoryClickListener;
+import pl.jasmc.jashub.listeners.custom.events.UpdateEvent;
+import pl.jasmc.jashub.listeners.custom.events.UpdateType;
 import pl.jasmc.jashub.objects.CollectionStorage;
+import pl.jasmc.jashub.particles.UnlockedParticle;
 import pl.jasmc.jashub.yamler.Yamler;
 
 import java.io.File;
@@ -55,6 +60,7 @@ public final class JasCollection extends JavaPlugin {
         this.loadDatabase();
         this.registerCommands();
         this.registerListeners();
+        new runUpdater(this);
     }
 
     @Override
@@ -87,8 +93,11 @@ public final class JasCollection extends JavaPlugin {
         }
         config = new Yamler(f);
         DEBUG = config.getCfg().getBoolean("General.DebugMode");
+
         COLLECTION_MENU = config.getCfg().getString("Inventory.name");
     }
+
+
 
     private void loadItemBase() {
         File itembase = new File(getDataFolder(), "itemBase.yml");
@@ -110,6 +119,7 @@ public final class JasCollection extends JavaPlugin {
         pm.registerEvents(new JoinListener(), this);
         pm.registerEvents(new InventoryClickListener(), this);
         pm.registerEvents(new CollectionClickListener(), this);
+        pm.registerEvents(new UnlockedParticle(), this);
     }
 
     public void loadDatabase() {
@@ -143,6 +153,27 @@ public final class JasCollection extends JavaPlugin {
         return ChatColor.translateAlternateColorCodes('&', msg);
     }
 
+    public class runUpdater
+    {
+        public runUpdater(JavaPlugin plugin) {
+            Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Fastest(), 0L, 1L);
+        }
+
+        protected class Fastest implements Runnable
+        {
+            @Override
+            public void run() {
+                Bukkit.getPluginManager().callEvent(new UpdateEvent(UpdateType.FASTEST));
+            }
+        }
+
+    }
+
+
 
 
 }
+
+
+
+

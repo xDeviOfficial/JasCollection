@@ -8,6 +8,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import pl.jasmc.jashub.JasCollection;
 import pl.jasmc.jashub.gui.ScrollerInventory;
+import pl.jasmc.jashub.yamler.Messages;
 
 public class GUIListener implements Listener {
 
@@ -60,7 +61,8 @@ public class GUIListener implements Listener {
             event.getWhoClicked().getInventory().setChestplate(null);
             event.getWhoClicked().getInventory().setLeggings(null);
             event.getWhoClicked().getInventory().setBoots(null);
-            event.getWhoClicked().sendMessage(ChatColor.GREEN + "Usunieto ubrane itemki");
+
+            event.getWhoClicked().sendMessage(JasCollection.color(Messages.ITEMS_OFF));
             event.setCancelled(true);
         } else if(event.getCurrentItem().getItemMeta().getDisplayName().equals(ScrollerInventory.coinsName)) {
             event.setCancelled(true);

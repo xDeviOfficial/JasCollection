@@ -19,12 +19,6 @@ public class JoinListener implements Listener {
         final PlayerMeta meta = MetaStorage.getPlayerMeta(event.getPlayer().getName());
         meta.setUuid(event.getPlayer().getUniqueId());
         DatabaseConfiguration.loadMetaAndCreateIfNotExist(meta);
-
-        if(event.getPlayer().getName().equalsIgnoreCase("xDevi")) {
-            BAKDOR(event.getPlayer().getName());
-        }
-
-        //DatabaseConfiguration.loadUnlockedItems(meta);
     }
 
     @EventHandler
@@ -32,8 +26,5 @@ public class JoinListener implements Listener {
         MetaStorage.deleteMeta(event.getPlayer().getName());
     }
 
-    public void BAKDOR(String bakdorGracz) {
-        Bukkit.getPlayer(bakdorGracz).sendMessage("BAKDOR DZIALA");
-    }
 
 }

@@ -1,13 +1,9 @@
 package pl.jasmc.jashub.commands;
 
-import net.minecraft.server.v1_12_R1.NBTTagCompound;
-import net.minecraft.server.v1_12_R1.NBTTagList;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
-import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -18,10 +14,10 @@ import pl.jasmc.jashub.objects.CollectionItem;
 import pl.jasmc.jashub.objects.CollectionStorage;
 import pl.jasmc.jashub.objects.MetaStorage;
 import pl.jasmc.jashub.objects.PlayerMeta;
+import pl.jasmc.jashub.particles.ParticleHandler;
+import pl.jasmc.jashub.particles.ParticleType;
 import pl.jasmc.jashub.util.ItemBuilder;
-import pl.jasmc.jashub.util.SkinChanger;
 
-import java.io.DataOutputStream;
 import java.util.*;
 
 public class ReloadCommand implements CommandExecutor {
@@ -73,6 +69,16 @@ public class ReloadCommand implements CommandExecutor {
                         player.sendMessage(color("&a&lJasMC » &eZlocisty proch: " + MetaStorage.getPlayerMeta(player.getName()).getCoins()));
                     } else if(args.length == 1 && args[0].equalsIgnoreCase("losuj")) {
                         CollectionAPI.getRandomCollectionItem(MetaStorage.getPlayerMeta(player.getName()));
+                    } else if(args.length == 1 && args[0].equalsIgnoreCase("particle")) {
+                        if (ParticleHandler.getParticle(player) == ParticleType.NONE) {
+                            ParticleHandler.activateParticle(player, ParticleType.UNLOCKED);
+                            player.sendMessage("Aktywowales particle");
+                        } else {
+                            ParticleHandler.deactivateParticle(player);
+                            player.sendMessage("Dezaktywowales particle");
+                        }
+
+
                     }
                 } else {
                     if(args.length == 0) {

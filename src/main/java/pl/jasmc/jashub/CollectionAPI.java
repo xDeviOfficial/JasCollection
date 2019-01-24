@@ -6,6 +6,7 @@ import pl.jasmc.jashub.objects.CollectionItem;
 import pl.jasmc.jashub.objects.CollectionStorage;
 import pl.jasmc.jashub.objects.MetaStorage;
 import pl.jasmc.jashub.objects.PlayerMeta;
+import pl.jasmc.jashub.yamler.Messages;
 
 import java.util.Map;
 import java.util.Random;
@@ -42,11 +43,12 @@ public class CollectionAPI {
         if(meta.isUnlocked(randomItem.getId())) {
 
             meta.addCoins(randomItem.getPrice()/2);
-            meta.getPlayer().sendMessage(ChatColor.GREEN + "Wylosowales " + randomItem.getPrice() / 2);
+            meta.getPlayer().sendMessage(JasCollection.color(Messages.RANDOM_ITEM_MONEY.replace("{randomMoney}", String.valueOf(randomItem.getPrice()/2))));
         } else {
             DatabaseConfiguration.unlockItem(randomItem.getId(), meta);
             meta.getItemByID(randomItem.getId()).setUnlocked(true);
-            meta.getPlayer().sendMessage(ChatColor.GREEN + "Wylosowales " + randomItem.getName());
+
+            meta.getPlayer().sendMessage(JasCollection.color(Messages.RANDOM_ITEM.replace("{item}", randomItem.getName()).replace("_", " ")));
         }
     }
 

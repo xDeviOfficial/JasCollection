@@ -115,6 +115,9 @@ public class DatabaseConfiguration {
         String sql = "UPDATE `JasCollectionUsers` SET `coins` = coins -" + coins + " WHERE `user_id` = '" + meta.getIdInBase() + "';";
         try {
             stm.executeUpdate(sql);
+            if(JasCollection.DEBUG) {
+                System.out.println("Usunięto " + coins + " monet graczoi " + meta.getName() + " przez klase ");
+            }
             meta.setCoins(meta.getCoins()-coins);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -141,28 +144,22 @@ public class DatabaseConfiguration {
 
     public static void unlockItem(int id, PlayerMeta meta) {
         if(alreadyUnlocked(id, meta.getIdInBase())) {
-            System.out.println("User: " + meta.getName() + " already unclodked: " + id + " Abortring unclock!");
+            if(JasCollection.DEBUG) {
+                System.out.println("User: " + meta.getName() + " already unclodked: " + id + " Abortring unclock!");
+            }
+
             return;
         }
         String sql = "INSERT INTO `JasCollectionUnlocks` VALUES ('" + id + "', '" + meta.getIdInBase() + "')";
         try {
             stm.executeUpdate(sql);
-            System.out.println("Unlock complete for user " + meta.getName() + " and unlock_id:" + id);
+            if(JasCollection.DEBUG) {
+                System.out.println("Unlock complete for user " + meta.getName() + " and unlock_id:" + id);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-
-
-
-
-
-
-
-
-
-
-
 
 
 

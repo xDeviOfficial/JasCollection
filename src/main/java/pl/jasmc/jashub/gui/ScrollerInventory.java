@@ -97,18 +97,31 @@ public class ScrollerInventory{
 
 
 
-        ItemStack glass = new ItemBuilder(Material.STAINED_GLASS_PANE).setDurability((byte) 10).setName(emptyString).toItemStack();
-        for(int glassPos = 0; glassPos < 9; glassPos++) {
-            page.setItem(glassPos, glass);
-        }
+        ItemStack greenGlass = new ItemBuilder(Material.STAINED_GLASS_PANE).setDurability((byte) 5).setName(emptyString).toItemStack();
+        ItemStack yellowGlass = new ItemBuilder(Material.STAINED_GLASS_PANE).setDurability((byte) 4).setName(emptyString).toItemStack();
+
+
+        //GORA
+        page.setItem(0, yellowGlass);
+        page.setItem(1, greenGlass);
+        page.setItem(2, greenGlass);
+        page.setItem(3, yellowGlass);
+        page.setItem(4, greenGlass);
+        page.setItem(5, yellowGlass);
+        page.setItem(6, greenGlass);
+        page.setItem(7, greenGlass);
+        page.setItem(8, yellowGlass);
+
+
 
         //LWEA STRONA
         //1 rzad od lewej
-        page.setItem(9, glass);
-        page.setItem(18, glass);
-        page.setItem(27, glass);
+        page.setItem(9, greenGlass);
+        page.setItem(18, yellowGlass);
+        page.setItem(27, greenGlass);
         page.setItem(36, goldenPowder);
-        //2rzad od lewej
+
+        //2rzad od lewej - szare puste
         page.setItem(10, emptySlot);
         page.setItem(19 ,emptySlot);
         page.setItem(28 ,emptySlot);
@@ -117,11 +130,11 @@ public class ScrollerInventory{
 
         //PRAWA STRONA
         //1rzad
-        page.setItem(17, glass);
-        page.setItem(26, glass);
-        page.setItem(35, glass);
-        page.setItem(45, glass);
-        //2rzad
+        page.setItem(17, greenGlass);
+        page.setItem(26, yellowGlass);
+        page.setItem(35, greenGlass);
+        page.setItem(45, yellowGlass);
+        //2rzad - szare puste
         page.setItem(16 ,emptySlot);
         page.setItem(25 ,emptySlot);
         page.setItem(34 ,emptySlot);
@@ -129,14 +142,14 @@ public class ScrollerInventory{
 
         //DOL
 
-        page.setItem(46, prevpage);
-        page.setItem(47 ,glass);
-        page.setItem(48, glass);
+        page.setItem(46, greenGlass);
+        page.setItem(47 ,prevpage);
+        page.setItem(48, greenGlass);
         page.setItem(49, close);
-        page.setItem(50, glass);
-        page.setItem(51, glass);
-        page.setItem(52, nextpage);
-        page.setItem(53, glass);
+        page.setItem(50, greenGlass);
+        page.setItem(51, nextpage);
+        page.setItem(52, greenGlass);
+        page.setItem(53, yellowGlass);
         page.setItem(44, disableEffects);
 
 
