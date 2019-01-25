@@ -42,6 +42,7 @@ public class CollectionClickListener implements Listener {
                 if (ParticleHandler.getParticle(event.getMeta().getPlayer()) == ParticleType.NONE) {
                     ParticleHandler.activateParticle(event.getMeta().getPlayer(), ParticleType.UNLOCKED);
                 }
+
                 Bukkit.getScheduler().runTaskLaterAsynchronously(JasCollection.getInstance(), new Runnable() {
                     @Override
                     public void run() {

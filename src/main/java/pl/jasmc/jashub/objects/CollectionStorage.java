@@ -23,7 +23,9 @@ public class CollectionStorage {
 
     public static void reloadCollection() {
         collection.clear();
-        System.out.println("Kolekcja wyczyszczona");
+        if(JasCollection.DEBUG) {
+            System.out.println("Kolekcja wyczyszczona");
+        }
         loadCollection();
     }
 

@@ -20,7 +20,7 @@ import pl.jasmc.jashub.util.ItemBuilder;
 
 import java.util.*;
 
-public class ReloadCommand implements CommandExecutor {
+public class CollectionCommand implements CommandExecutor {
 
 
     @Override
@@ -64,6 +64,7 @@ public class ReloadCommand implements CommandExecutor {
                         JasCollection.getItemBase().reload();
                         JasCollection.getYamler().reload();
                         JasCollection.getInstance().loadConfig();
+                        JasCollection.getMessages().reload();
                         player.sendMessage(color("&a&lJasMC » &ePomyslnie przeladowano Config"));
                     } else if(args.length == 1 && args[0].equalsIgnoreCase("monety")) {
                         player.sendMessage(color("&a&lJasMC » &eZlocisty proch: " + MetaStorage.getPlayerMeta(player.getName()).getCoins()));
@@ -85,8 +86,8 @@ public class ReloadCommand implements CommandExecutor {
                         openCollection(player);
                     } else if(args.length == 1 && args[0].equalsIgnoreCase("monety")) {
                         player.sendMessage(color("&a&lJasMC » &eZlocisty proch: " + MetaStorage.getPlayerMeta(player.getName()).getCoins()));
-                    } else if(args.length == 1 && args[0].equalsIgnoreCase("losuj")) {
-                        CollectionAPI.getRandomCollectionItem(MetaStorage.getPlayerMeta(player.getName()));
+                    } else {
+                        openCollection(player);
                     }
 
                 }

@@ -77,20 +77,13 @@ public class DatabaseConfiguration {
             insertPlayerData(meta);
         }
     }
-
-            /*
-        loadTestPresentFound()
-        @p = JPlayer obiekt
-        Ladowanie znalezionych prezentow
+    /*
+        *loadUnlockedItems()
+        *@player = PlayerMeta
+        Ladowanie znalezionych itemow
      */
 
     public static void loadUnlockedItems(PlayerMeta player) {
-
-
-       // List<CollectionItem> collectionItemList = new ArrayList<CollectionItem>();
-        //for (String name : JasCollection.getItemBase().getCfg().getConfigurationSection("").getKeys(false)) {
-         //   collectionItemList.add(new CollectionItem(JasCollection.getItemBase().getCfg().getItemStack(name+ ".itemstack"), JasCollection.getItemBase().getCfg().getInt(name + ".id"), JasCollection.getItemBase().getCfg().getInt(name + ".price")));
-       // }
 
         String query = "SELECT * FROM JasCollectionUnlocks INNER JOIN JasCollectionUsers ON JasCollectionUnlocks.user_id = JasCollectionUsers.user_id WHERE JasCollectionUsers.username = \"" + player.getName() + "\" ";
         try {
@@ -100,7 +93,6 @@ public class DatabaseConfiguration {
                 CollectionItem item = CollectionStorage.getItemByID(itemId);
                 item.setUnlocked(true);
                 player.getAllItems().add(item);
-               // player.getUnlockedItems().add(item);
                 if(JasCollection.DEBUG) {
                     System.out.println("Unlock: " + item.getId() + " dla " + player.getName());
                 }

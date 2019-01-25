@@ -3,11 +3,9 @@ package pl.jasmc.jashub;
 import com.zaxxer.hikari.HikariDataSource;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.event.Event;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import pl.jasmc.jashub.commands.ReloadCommand;
+import pl.jasmc.jashub.commands.CollectionCommand;
 import pl.jasmc.jashub.database.DatabaseConfiguration;
 import pl.jasmc.jashub.gui.listeners.GUIListener;
 import pl.jasmc.jashub.listeners.CollectionClickListener;
@@ -17,18 +15,19 @@ import pl.jasmc.jashub.listeners.custom.events.UpdateEvent;
 import pl.jasmc.jashub.listeners.custom.events.UpdateType;
 import pl.jasmc.jashub.objects.CollectionStorage;
 import pl.jasmc.jashub.particles.UnlockedParticle;
+import pl.jasmc.jashub.yamler.Messages;
 import pl.jasmc.jashub.yamler.Yamler;
 
 import java.io.File;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 public final class JasCollection extends JavaPlugin {
 
     public static boolean DEBUG;
 
     public static String COLLECTION_MENU;
+
+    private static Messages messages;
 
     private static Yamler config;
     private static Yamler itemBase;
@@ -46,6 +45,10 @@ public final class JasCollection extends JavaPlugin {
         return config;
     }
 
+    public static Messages getMessages() {
+        return messages;
+    }
+
     private static JasCollection inst;
 
     public static JasCollection getInstance() {
@@ -60,6 +63,7 @@ public final class JasCollection extends JavaPlugin {
         this.loadDatabase();
         this.registerCommands();
         this.registerListeners();
+        this.loadMessages();
         new runUpdater(this);
     }
 
@@ -97,6 +101,11 @@ public final class JasCollection extends JavaPlugin {
         COLLECTION_MENU = config.getCfg().getString("Inventory.name");
     }
 
+    private void loadMessages() {
+        messages = new Messages();
+        messages.load();
+    }
+
 
 
     private void loadItemBase() {
@@ -110,7 +119,7 @@ public final class JasCollection extends JavaPlugin {
         CollectionStorage.loadCollection();
     }
     private void registerCommands() {
-        getCommand("kolekcja").setExecutor(new ReloadCommand());
+        getCommand("kolekcja").setExecutor(new CollectionCommand());
     }
 
     private void registerListeners() {

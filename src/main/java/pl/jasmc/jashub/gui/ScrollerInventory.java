@@ -10,6 +10,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionType;
+import pl.jasmc.jashub.JasCollection;
 import pl.jasmc.jashub.objects.MetaStorage;
 import pl.jasmc.jashub.objects.PlayerMeta;
 import pl.jasmc.jashub.util.ItemBuilder;
@@ -33,7 +34,9 @@ public class ScrollerInventory{
         //According to the items in the arraylist, add items to the ScrollerInventory
         for(int i = 0;i < items.size(); i++){
             //If the current page is full, add the page to the inventory's pages arraylist, and create a new page to add the items.
-            System.out.println("First empty: " + page.firstEmpty());
+            if(JasCollection.DEBUG) {
+                System.out.println("First empty: " + page.firstEmpty());
+            }
             if(page.firstEmpty() == 46 || page.firstEmpty() == -1 ){
                 pages.add(page);
                 page = getBlankPage(name, MetaStorage.getPlayerMeta(p.getName()));
